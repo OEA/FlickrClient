@@ -14,6 +14,7 @@ class ImageHeaderView: UITableViewHeaderFooterView {
     let profileImageView : UIImageView = {
         let profileImageView = UIImageView()
         profileImageView.layer.cornerRadius = 15
+        profileImageView.layer.masksToBounds = true
         return profileImageView
     }()
     
