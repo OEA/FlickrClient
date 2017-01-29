@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SDWebImage
 
 class ViewController: UITableViewController {
     
@@ -23,18 +24,31 @@ class ViewController: UITableViewController {
         self.tableView.tableHeaderView = searchController.searchBar
         definesPresentationContext = true
         searchController.dimsBackgroundDuringPresentation = false
+        self.tableView.register(ImageTableViewCell.self, forCellReuseIdentifier: "imageCell")
+        self.tableView.estimatedRowHeight = self.view.frame.width
+        self.tableView.rowHeight = UITableViewAutomaticDimension
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
     
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return 10
     }
     
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 1
+    }
+    
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return "Test"
+    }
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        return UITableViewCell()
+        let cell = tableView.dequeueReusableCell(withIdentifier: "imageCell", for: indexPath) as! ImageTableViewCell
+        cell.customImageView.sd_setImage(with: URL(string: "https://i.ytimg.com/vi/lE6RYpe9IT0/maxresdefault.jpg"))
+        return cell
     }
 
 
