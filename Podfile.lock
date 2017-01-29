@@ -4,6 +4,7 @@ PODS:
     - DACircularProgress
     - PINRemoteImage (~> 3.0.0-beta.7)
   - DACircularProgress (2.3.1)
+  - DateTools (1.7.0)
   - ESPullToRefresh (2.5)
   - FLAnimatedImage (1.0.12)
   - PINCache (3.0.1-beta.2):
@@ -31,6 +32,7 @@ PODS:
 DEPENDENCIES:
   - Alamofire (~> 4.3)
   - BFRImageViewer
+  - DateTools
   - ESPullToRefresh
   - SDWebImage (~> 3.8)
   - SnapKit (~> 3.1.2)
@@ -40,6 +42,7 @@ SPEC CHECKSUMS:
   Alamofire: 856a113053a7bc9cbe5d6367a555d773fc5cfef7
   BFRImageViewer: 581a9b634566f7a43c15584ce1e251fca203e89e
   DACircularProgress: 4dd437c0fc3da5161cb289e07ac449493d41db71
+  DateTools: 53288ee8b905fdc75897a1e6b5cc0144b14cba60
   ESPullToRefresh: ce43254f1d3767be9396bc6b433ee9516010c453
   FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
   PINCache: 6d273a6e0754bd26e3f12a38a90dde73cc6a42b2
@@ -48,6 +51,6 @@ SPEC CHECKSUMS:
   SnapKit: 12b24f569cb7c143acc9c22b9d91b23e7b1c84a2
   SwiftyJSON: c2842d878f95482ffceec5709abc3d05680c0220
 
-PODFILE CHECKSUM: 849633c2d19cd19c70df4be685c095ab1838205d
+PODFILE CHECKSUM: 45f4c2d95de1f50e57c9fb0c2bb849fec57c8ba0
 
 COCOAPODS: 1.1.1

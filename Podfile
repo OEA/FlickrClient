@@ -14,4 +14,6 @@ target 'FlickrClient' do
     pod 'SwiftyJSON'
     # Infinite Scrolling
     pod 'ESPullToRefresh'
+    # Date
+    pod 'DateTools'
 end
