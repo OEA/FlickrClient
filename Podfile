@@ -10,4 +10,8 @@ target 'FlickrClient' do
 	# Image
 	pod 'SDWebImage', '~>3.8'
 	pod 'BFRImageViewer'
+    # JSON
+    pod 'SwiftyJSON'
+    # Infinite Scrolling
+    pod 'ESPullToRefresh'
 end
