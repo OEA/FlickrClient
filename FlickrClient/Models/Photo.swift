@@ -18,6 +18,8 @@ class Photo : NSObject {
     private(set) var isPublic: Bool! = true
     private(set) var isFriend: Bool! = false
     private(set) var isFamily: Bool! = false
+    private(set) var takenTime: Date!
+    private(set) var uploadTime: Date!
     
     
     //MARK: Setters
@@ -55,5 +57,13 @@ class Photo : NSObject {
     
     func setIsFamily(isFamily: Bool) {
         self.isFamily = isFamily
+    }
+    
+    func setTakenTime(takenTime: Date) {
+        self.takenTime = takenTime
+    }
+    
+    func setUploadTime(uploadTime: Date) {
+        self.uploadTime = uploadTime
     }
 }
