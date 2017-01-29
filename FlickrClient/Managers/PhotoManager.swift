@@ -50,6 +50,25 @@ class PhotoManager : NSObject {
         }
     }
     
+    func searchPhoto(_ keyword: String,
+                     _ completion: @escaping ((_ photos: [Photo])->Void),
+                     _ fail: @escaping (_ message: String)->Void) {
+        let parameters = [
+            "method": UrlMethods.search.rawValue,
+            "extras": "owner_name, icon_server, date_upload, date_taken",
+            "text": keyword
+        ]
+        Alamofire.request(baseUrl, method: .get, parameters: parameters).responseJSON { response in
+            let json = JSON(response.result.value!)
+            if json["stat"].stringValue == "fail" {
+                fail(json["message"].stringValue)
+                return
+            }
+            let photos = self.getPhotosFromJson(json["photos"]["photo"].arrayValue)
+            completion(photos)
+        }
+    }
+    
     func getPhotoURL(photo: Photo) -> String {
         return "http://farm\(photo.farm!).staticflickr.com/\(photo.server!)/\(photo.id!)_\(photo.secret!).jpg"
     }
