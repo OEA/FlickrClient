@@ -8,14 +8,24 @@
 
 import UIKit
 import SDWebImage
+import ESPullToRefresh
+import DateTools
 
 class ViewController: UITableViewController {
-    
+    var currentPage = 1
+    var photos: [Photo] = []
     var searchController: UISearchController = UISearchController(searchResultsController: nil)
 
     override func viewDidLoad() {
         super.viewDidLoad()
         initViews()
+        PhotoManager.sharedInstance.getRecentPhotos(currentPage, { (photos) in
+            self.photos = photos
+            self.tableView.reloadData()
+            self.currentPage += 1
+        }) { (message) in
+            
+        }
     }
     
     private func initViews() {
@@ -29,6 +39,30 @@ class ViewController: UITableViewController {
         self.tableView.register(ImageHeaderView.self, forHeaderFooterViewReuseIdentifier: "imageHeader")
         self.tableView.estimatedRowHeight = self.view.frame.width
         self.tableView.rowHeight = UITableViewAutomaticDimension
+        _ = self.tableView.es_addPullToRefresh {
+            PhotoManager.sharedInstance.getRecentPhotos(1, { (photos) in
+                self.photos = photos
+                self.tableView.reloadData()
+                self.tableView.es_resetNoMoreData()
+                self.tableView.es_stopPullToRefresh()
+                self.currentPage += 1
+            }) { (message) in
+                
+            }
+        }
+        
+        _ = self.tableView.es_addInfiniteScrolling {
+            PhotoManager.sharedInstance.getRecentPhotos(self.currentPage, { (photos) in
+                //Recent images are changing every second so we can filter by ID but it takes O(N) time.
+                //OR we can use NSDictionary to filter photos. But I don't filter for this version.
+                self.photos.append(contentsOf: photos)
+                self.tableView.reloadData()
+                self.tableView.es_stopLoadingMore()
+                self.currentPage += 1
+            }) { (message) in
+                
+            }
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -36,7 +70,7 @@ class ViewController: UITableViewController {
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 10
+        return self.photos.count
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -44,9 +78,13 @@ class ViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let photo = photos[section]
         let headerView = ImageHeaderView(reuseIdentifier: "imageHeader")
-        headerView.profileNameLabel.text = "Test Name"
-        headerView.timeLabel.text = "2 days ago"
+        headerView.profileNameLabel.text = photo.owner!.realName
+        let uploadDate: NSDate = NSDate(timeIntervalSince1970: photo.uploadTime.timeIntervalSince1970)
+        headerView.timeLabel.text = uploadDate.timeAgoSinceNow()
+        let imageUrl = PhotoManager.sharedInstance.getBuddiesURL(owner: photo.owner)
+        headerView.profileImageView.sd_setImage(with: URL(string: imageUrl))
         return headerView
     }
     
@@ -55,8 +93,9 @@ class ViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let photo = photos[indexPath.section]
         let cell = tableView.dequeueReusableCell(withIdentifier: "imageCell", for: indexPath) as! ImageTableViewCell
-        cell.customImageView.sd_setImage(with: URL(string: "https://i.ytimg.com/vi/lE6RYpe9IT0/maxresdefault.jpg"))
+        cell.customImageView.sd_setImage(with: URL(string: PhotoManager.sharedInstance.getPhotoURL(photo: photo)))
         return cell
     }
 
