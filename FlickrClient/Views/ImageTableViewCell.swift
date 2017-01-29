@@ -25,7 +25,7 @@ class ImageTableViewCell: UITableViewCell {
         contentView.addSubview(customImageView)
         customImageView.snp.makeConstraints { (make) in
             make.edges.equalToSuperview()
-            make.height.width.equalTo(UIScreen.main.bounds.width)
+            make.height.width.equalTo(UIScreen.main.bounds.width).priority(250)
         }
     }
     
