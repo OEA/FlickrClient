@@ -59,6 +59,8 @@
 		178E42891E3E10C2004DE3CA /* FlickrClient */ = {
 			isa = PBXGroup;
 			children = (
+				178E429D1E3E13FF004DE3CA /* Models */,
+				178E429C1E3E13F9004DE3CA /* Views */,
 				178E428A1E3E10C2004DE3CA /* AppDelegate.swift */,
 				178E428C1E3E10C2004DE3CA /* ViewController.swift */,
 				178E42911E3E10C2004DE3CA /* Assets.xcassets */,
@@ -66,6 +68,20 @@
 				178E42961E3E10C3004DE3CA /* Info.plist */,
 			);
 			path = FlickrClient;
+			sourceTree = "<group>";
+		};
+		178E429C1E3E13F9004DE3CA /* Views */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		178E429D1E3E13FF004DE3CA /* Models */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 		6E901626CCBE259A4C453FEF /* Frameworks */ = {
@@ -364,6 +380,7 @@
 				178E429B1E3E10C3004DE3CA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
