@@ -10,6 +10,7 @@ import UIKit
 import SDWebImage
 import ESPullToRefresh
 import DateTools
+import BFRImageViewer
 
 class ViewController: UITableViewController {
     var currentPage = 1
@@ -34,7 +35,7 @@ class ViewController: UITableViewController {
         self.tableView.tableHeaderView = searchController.searchBar
         definesPresentationContext = true
         searchController.dimsBackgroundDuringPresentation = false
-        searchController.delegate = self
+        searchController.searchResultsUpdater = self
         self.tableView.register(ImageTableViewCell.self, forCellReuseIdentifier: "imageCell")
         self.tableView.register(ImageHeaderView.self, forHeaderFooterViewReuseIdentifier: "imageHeader")
         self.tableView.estimatedRowHeight = self.view.frame.width
@@ -70,12 +71,28 @@ class ViewController: UITableViewController {
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
+        
+        if searchController.isActive {
+            self.tableView.es_removeRefreshFooter()
+            self.tableView.es_removeRefreshHeader()
+            self.tableView.separatorStyle = .none
+            self.tableView.tableFooterView?.isHidden = true
+            
+            return 0
+            
+        } else {
+//            self.tableView.es_startPullToRefresh()
+//            self.tableView.add
+            self.tableView.separatorStyle = .singleLine
+            self.tableView.tableFooterView?.isHidden = false
+        }
         return self.photos.count
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1
     }
+    
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let photo = photos[section]
@@ -86,6 +103,12 @@ class ViewController: UITableViewController {
         let imageUrl = PhotoManager.sharedInstance.getBuddiesURL(owner: photo.owner)
         headerView.profileImageView.sd_setImage(with: URL(string: imageUrl))
         return headerView
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let photo = photos[indexPath.section]
+        let imageVC = BFRImageViewController(imageSource: [PhotoManager.sharedInstance.getPhotoURL(photo: photo)])
+        self.present(imageVC!, animated: true, completion: nil)
     }
     
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -102,8 +125,10 @@ class ViewController: UITableViewController {
 
 }
 
-extension ViewController : UISearchControllerDelegate {
-    func willPresentSearchController(_ searchController: UISearchController) {
-        
+extension ViewController : UISearchResultsUpdating {
+    
+    func updateSearchResults(for searchController: UISearchController) {
+   
     }
+    
 }
