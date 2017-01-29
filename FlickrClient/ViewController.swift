@@ -24,7 +24,9 @@ class ViewController: UITableViewController {
         self.tableView.tableHeaderView = searchController.searchBar
         definesPresentationContext = true
         searchController.dimsBackgroundDuringPresentation = false
+        searchController.delegate = self
         self.tableView.register(ImageTableViewCell.self, forCellReuseIdentifier: "imageCell")
+        self.tableView.register(ImageHeaderView.self, forHeaderFooterViewReuseIdentifier: "imageHeader")
         self.tableView.estimatedRowHeight = self.view.frame.width
         self.tableView.rowHeight = UITableViewAutomaticDimension
     }
@@ -41,8 +43,15 @@ class ViewController: UITableViewController {
         return 1
     }
     
-    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return "Test"
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let headerView = ImageHeaderView(reuseIdentifier: "imageHeader")
+        headerView.profileNameLabel.text = "Test Name"
+        headerView.timeLabel.text = "2 days ago"
+        return headerView
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 50
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -54,3 +63,8 @@ class ViewController: UITableViewController {
 
 }
 
+extension ViewController : UISearchControllerDelegate {
+    func willPresentSearchController(_ searchController: UISearchController) {
+        
+    }
+}
