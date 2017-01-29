@@ -9,11 +9,20 @@
 import UIKit
 
 class ViewController: UITableViewController {
+    
+    var searchController: UISearchController = UISearchController(searchResultsController: nil)
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        initViews()
+    }
+    
+    private func initViews() {
         self.view.backgroundColor = UIColor.white
         self.title = "Flickr"
+        self.tableView.tableHeaderView = searchController.searchBar
+        definesPresentationContext = true
+        searchController.dimsBackgroundDuringPresentation = false
     }
 
     override func didReceiveMemoryWarning() {
