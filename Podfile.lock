@@ -1,0 +1,47 @@
+PODS:
+  - Alamofire (4.3.0)
+  - BFRImageViewer (1.0.24):
+    - DACircularProgress
+    - PINRemoteImage (~> 3.0.0-beta.7)
+  - DACircularProgress (2.3.1)
+  - FLAnimatedImage (1.0.12)
+  - PINCache (3.0.1-beta.2):
+    - PINCache/Arc-exception-safe (= 3.0.1-beta.2)
+    - PINCache/Core (= 3.0.1-beta.2)
+  - PINCache/Arc-exception-safe (3.0.1-beta.2):
+    - PINCache/Core
+  - PINCache/Core (3.0.1-beta.2)
+  - PINRemoteImage (3.0.0-beta.7):
+    - PINRemoteImage/FLAnimatedImage (= 3.0.0-beta.7)
+    - PINRemoteImage/PINCache (= 3.0.0-beta.7)
+  - PINRemoteImage/Core (3.0.0-beta.7)
+  - PINRemoteImage/FLAnimatedImage (3.0.0-beta.7):
+    - FLAnimatedImage (>= 1.0)
+    - PINRemoteImage/Core
+  - PINRemoteImage/PINCache (3.0.0-beta.7):
+    - PINCache (= 3.0.1-beta.2)
+    - PINRemoteImage/Core
+  - SDWebImage (3.8.2):
+    - SDWebImage/Core (= 3.8.2)
+  - SDWebImage/Core (3.8.2)
+  - SnapKit (3.1.2)
+
+DEPENDENCIES:
+  - Alamofire (~> 4.3)
+  - BFRImageViewer
+  - SDWebImage (~> 3.8)
+  - SnapKit (~> 3.1.2)
+
+SPEC CHECKSUMS:
+  Alamofire: 856a113053a7bc9cbe5d6367a555d773fc5cfef7
+  BFRImageViewer: 581a9b634566f7a43c15584ce1e251fca203e89e
+  DACircularProgress: 4dd437c0fc3da5161cb289e07ac449493d41db71
+  FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
+  PINCache: 6d273a6e0754bd26e3f12a38a90dde73cc6a42b2
+  PINRemoteImage: ff63baf185088530db6cfa41cb665e2b5126b5c3
+  SDWebImage: 098e97e6176540799c27e804c96653ee0833d13c
+  SnapKit: 12b24f569cb7c143acc9c22b9d91b23e7b1c84a2
+
+PODFILE CHECKSUM: b25e2929fa5cd33e369dcfb2f4eaabfe73e648bd
+
+COCOAPODS: 1.1.1
