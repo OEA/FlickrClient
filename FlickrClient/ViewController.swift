@@ -15,6 +15,7 @@ import BFRImageViewer
 class ViewController: UITableViewController {
     var currentPage = 1
     var photos: [Photo] = []
+    var filteredPhotos: [Photo] = []
     var searchController: UISearchController = UISearchController(searchResultsController: nil)
 
     override func viewDidLoad() {
@@ -40,6 +41,10 @@ class ViewController: UITableViewController {
         self.tableView.register(ImageHeaderView.self, forHeaderFooterViewReuseIdentifier: "imageHeader")
         self.tableView.estimatedRowHeight = self.view.frame.width
         self.tableView.rowHeight = UITableViewAutomaticDimension
+        self.addRefreshViews()
+    }
+    
+    internal func addRefreshViews() {
         _ = self.tableView.es_addPullToRefresh {
             PhotoManager.sharedInstance.getRecentPhotos(1, { (photos) in
                 self.photos = photos
@@ -64,6 +69,7 @@ class ViewController: UITableViewController {
                 
             }
         }
+
     }
 
     override func didReceiveMemoryWarning() {
@@ -71,22 +77,12 @@ class ViewController: UITableViewController {
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        
         if searchController.isActive {
-            self.tableView.es_removeRefreshFooter()
-            self.tableView.es_removeRefreshHeader()
-            self.tableView.separatorStyle = .none
-            self.tableView.tableFooterView?.isHidden = true
-            
-            return 0
-            
+            return self.filteredPhotos.count
         } else {
-//            self.tableView.es_startPullToRefresh()
-//            self.tableView.add
-            self.tableView.separatorStyle = .singleLine
-            self.tableView.tableFooterView?.isHidden = false
+            return self.photos.count
         }
-        return self.photos.count
+        
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -95,7 +91,12 @@ class ViewController: UITableViewController {
     
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let photo = photos[section]
+        var photo: Photo!
+        if searchController.isActive {
+            photo = self.filteredPhotos[section]
+        } else {
+            photo = self.photos[section]
+        }
         let headerView = ImageHeaderView(reuseIdentifier: "imageHeader")
         headerView.profileNameLabel.text = photo.owner!.realName
         let uploadDate: NSDate = NSDate(timeIntervalSince1970: photo.uploadTime.timeIntervalSince1970)
@@ -106,7 +107,12 @@ class ViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let photo = photos[indexPath.section]
+        var photo: Photo!
+        if searchController.isActive {
+            photo = self.filteredPhotos[indexPath.section]
+        } else {
+            photo = self.photos[indexPath.section]
+        }
         let imageVC = BFRImageViewController(imageSource: [PhotoManager.sharedInstance.getPhotoURL(photo: photo)])
         self.present(imageVC!, animated: true, completion: nil)
     }
@@ -116,7 +122,12 @@ class ViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let photo = photos[indexPath.section]
+        var photo: Photo!
+        if searchController.isActive {
+            photo = self.filteredPhotos[indexPath.section]
+        } else {
+            photo = self.photos[indexPath.section]
+        }
         let cell = tableView.dequeueReusableCell(withIdentifier: "imageCell", for: indexPath) as! ImageTableViewCell
         cell.customImageView.sd_setImage(with: URL(string: PhotoManager.sharedInstance.getPhotoURL(photo: photo)))
         return cell
@@ -128,7 +139,23 @@ class ViewController: UITableViewController {
 extension ViewController : UISearchResultsUpdating {
     
     func updateSearchResults(for searchController: UISearchController) {
-   
+        self.filteredPhotos.removeAll()
+        self.tableView.reloadData()
+        if (searchController.searchBar.text?.characters.count)! > 0 {
+            PhotoManager.sharedInstance.searchPhoto(searchController.searchBar.text!, { (photos) in
+                self.filteredPhotos = photos
+                self.tableView.reloadData()
+            }) { (message) in
+                print(message)
+            }
+        }
+        
+        if searchController.isActive {
+            self.tableView.es_removeRefreshFooter()
+            self.tableView.es_removeRefreshHeader()
+        } else {
+            self.addRefreshViews()
+        }
     }
     
 }
